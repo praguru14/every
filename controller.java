@@ -75,3 +75,50 @@ public class CDFStagingController {
         cdfStagingCommandServiceImpl.saveDopStagingPersonnelReleaseData(list);
     }
 }
+------------------------------------------------------------------------------------------------------------------------------------
+    import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import java.util.Arrays;
+import java.util.List;
+
+@Component
+public class CDFStagingCommandServiceImpl implements ICDFStagingCommandService {
+
+    private static final Logger logger = LoggerFactory.getLogger(CDFStagingCommandServiceImpl.class);
+    
+    @Autowired
+    private IHrcdfPersonnelMaster hrcdfPersonnelMasterImpl;
+
+    @Autowired
+    private ICDFStagingCommandService cdfStagingCommandServiceImpl;
+
+    private static final List<String> USER_TYPES = Arrays.asList("OFFIC", "SAIL");
+
+    private void savePersonnelDetails() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+        try {
+            for (String userType : USER_TYPES) {
+                // Fetch personnel details for each user type
+                List<PersonnelDetail> list = hrcdfPersonnelMasterImpl.getPersonnelInfoFromHrcdf(
+                    null, null, 1, null, null, Arrays.asList(userType), null, null
+                );
+
+                // Check if the list is not empty before saving
+                if (list != null && !list.isEmpty()) {
+                    cdfStagingCommandServiceImpl.saveDopStagingPersonnelReleaseData(list);
+                    logger.info("Successfully saved personnel details for user type: {}", userType);
+                } else {
+                    logger.info("No personnel details found for user type: {}", userType);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred while saving personnel details: {}", e.getMessage(), e);
+            // Optionally rethrow or handle the exception
+        }
+    }
+}
+----------------------------------------------------------------------------------------------------------------
+    cron:
+  execution:
+    hrcdf: "0 19 * * 1,3,5"
+----------------------------------------------------------------------------------------------------------------------
