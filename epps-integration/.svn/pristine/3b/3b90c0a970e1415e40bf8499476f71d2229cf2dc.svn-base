@@ -1,0 +1,151 @@
+spring:
+  application:
+    name: epps-ayu
+  zipkin:
+    enabled: false
+    base-url: http://159.17.0.191:9411/
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
+  servlet:
+    multipart:
+      file-size-threshold: 2KB
+      location: /tmp
+      max-file-size: 50MB
+      max-request-size: 75MB
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  flyway:
+   locations: "classpath:db/migration"
+   baseline-on-migrate: true
+   url: ${jdbc-url}
+   schemas: inayu
+   table: inayu_migration
+   #tablespace:
+   user: epps_programmer
+   password: atul@1978eppsprogrammer
+   installed-by: application
+  mail:
+    host: smtp.gmail.com
+    port: '587'
+    username: epps.eatigo@epps-erp.com
+    password: eatigo!^epps
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+            required: 'false'
+          auth: 'true'
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          connectiontimeout: '60000'
+          timeout: '60000'
+          writetimeout: '60000'
+  
+  multipart:
+      enabled: 'true'
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+            
+eureka:
+  instance:
+    hostname: 159.17.0.190
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://159.17.0.191:10089/discovery/eureka/
+      
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging:
+  file:
+    name: ayu.log
+    max-size: 1MB
+    total-size-cap: 50MB
+    max-history: 30
+    clean-history-on-start: true
+  pattern:
+    rolling-file-name: a-%d{yyyy-MM-dd}.%i.log
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.springframework.cloud.config: INFO
+    com.epps: INFO
+            
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,,application/xml,image/jpeg
+    min-response-size: 2048
+  http2:
+    enabled: true
+  servlet:
+    context-path: /epps-ayu
+  port: 10085
+  
+feign:
+  compression:
+    request:
+      enable: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+  client:
+    config:
+      default:
+        connectTimeout: 60000
+        readTimeout: 60000
+        loggerLevel: FULL
+        
+jdbc-url: jdbc:postgresql://159.17.0.189:5432/inayu
+jdbc-driverClassName: org.postgresql.Driver
+jdbc-username: epps_developer
+jdbc-password: epps_developer@atul1978
+connection-timeout: 10000
+minimum-idle: 2
+maximum-pool-size: 10
+idle-timeout: 10000
+
+gatewayhost: 159.17.0.190
+gatewayswaggerport: 10087
+
+imageuploadpath: /home/admin/UploadedFiles/images
+
+#security:
+  #oauth2:
+    #resource:
+      #token-info-uri: http://159.17.0.190:10084/epps-auth/oauth/check_token
+    #client:
+      #client-id: epps-apps
+      #client-secret: eppsapps@123
+      
+      
+app: 
+  docker:
+    path:
+      base: workspaces/ayup
+      image: /data/images/
+      jasper: /data/jasper/
+      reports: /data/reports/
+      docs: /data/documents/
+      inv: ${app.docker.path.docs}/investigation/
+      condonation: ${app.docker.path.docs}/condonation/
+      afmsf2: ${app.docker.path.docs}/afmsf2/
+      rmd: ${app.docker.path.docs}/rmd/
+  external:
+    hrcdfurl: http://117.248.111.248:12381/    
+    
+cron:
+  execution:
+    hrcdf: 0 0 9 * * *      

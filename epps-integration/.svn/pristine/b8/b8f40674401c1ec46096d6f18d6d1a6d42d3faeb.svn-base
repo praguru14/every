@@ -1,0 +1,61 @@
+##################################################################################################################################################
+#	INSTRUCTIONS	:	1. Add properties below last property without leaving blank lines.
+#						2. HTTP status codes property names format will Be HTTP status code + ".message"
+#						3. EPPS Error codes property format should Be +1 increment to last property name.
+#						4. Error Code Classification
+#							* HTTP ERROR CODE ( 1 - 1000)
+#							* Internal Java Processing Error - (1100 -1199)
+#							* Database Operation & Procedure Error Processing - (1201 -1299)
+#							* REQUEST AND RESPONSE Error Processing - (1301 -1399)
+#							* Screen Validation Web (2001 - 3000)(Validation Exception)
+#							* Screen Validation Core (3001 - 4000)(Validation Exception)
+#							* Screen Validation Billing (4001 - 5000)(Validation Exception)
+#							* Screen Validation FAS (5001 - 6000)(Validation Exception)
+#							* Screen Validation NOTIFICATION (6001 - 7000)(Validation Exception)
+#							* Screen Validation REPORTS (7001 - 8000)(Validation Exception)
+#							* Screen Validation NOTIFICATION (9001 - 10000)(Validation Exception)
+#
+############################################################ HTTP status codes ###########################################################################
+
+404.message=We Are Sorry. Page Not Found.
+500.message=There Was A Problem In Completing The Action.
+
+
+##########################################################EPPS Error codes##############################################################
+1101 = Please Contact System Administrator.
+1102 = Unexpected Error In execution. 
+1103 = Duplicate Record Found
+1104 = The File Operation Failed.
+1105 = Create Transaction Not Allowed.
+1106 = Record Not Found.
+1107 = Internal Server Error
+1108 = You Are Not Authorized To Access This Feature
+1110 = User Is Already Logged-In Into The System.
+1111 = File Upload Max Size. 
+1112 = File Type Not Allowed.
+1066 = File Not Found.
+1131 = DATA FOUND
+###################################################REQUEST AND RESPONSE ERROR PROCESSING#######################################################################
+1310 = Validation Failed
+1311 = Required Parameters Not Found In request.
+
+
+
+
+
+##############################################################DATABASE AND PROCEDURE EXCEPTION#############################################################
+1201 = There Was An Error Encountered In Database Operations.
+
+1211 = Error Code Indicating An Unspecified Object Id.
+
+1221 = Transaction Changed By Another User, Please Try Again.
+
+1251 = Error In Generating Procedure.
+1053 = Table Does Not Exist In Database
+1054 = Column Not Exist In Table.
+
+
+##################################################################### Screen Validation REPORTS #############################################################
+1026 = Error In Generating Reports.
+1067 = No PDF Report Attached
+

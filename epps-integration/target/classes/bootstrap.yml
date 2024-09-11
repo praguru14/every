@@ -1,0 +1,115 @@
+spring:
+  cloud:
+    config:
+      uri: ${CLOUD_CONFIG_SERVER_URI:http://localhost:10088/config}
+      fail-fast: ${CLOUD_CONFIG_SERVER_FAIL_FAST:false}
+  rabbitmq:
+    host: 192.168.1.232
+    port: 5672
+    username: kg
+    password: kg
+    virtual-host: /
+    ssl:
+      enabled: false
+
+---
+# **bootstrap-local.yml**
+spring:
+  profiles: local
+  cloud:
+    config:
+      uri: ${CLOUD_CONFIG_SERVER_URI:http://localhost:10088/config}
+      fail-fast: ${CLOUD_CONFIG_SERVER_FAIL_FAST:false}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    ssl:
+      enabled: false
+
+
+
+---
+# **bootstrap-dev.yml**
+spring:
+  profiles: dev
+  cloud:
+    config:
+      uri: ${CLOUD_CONFIG_SERVER_URI:http://192.168.1.63:10088/config}
+      fail-fast: ${CLOUD_CONFIG_SERVER_FAIL_FAST:true}
+  rabbitmq:
+    host: 192.168.1.232
+    port: 5672
+    username: ayup
+    password: ayup
+    virtual-host: /
+    ssl:
+      enabled: false
+
+---
+# **bootstrap-qa.yml**
+spring:
+  profiles: qa
+  cloud:
+    config:
+      uri: ${CLOUD_CONFIG_SERVER_URI:http://159.17.0.191:10088/config}
+      fail-fast: ${CLOUD_CONFIG_SERVER_FAIL_FAST:true}
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST:159.17.0.191}
+    port: 5672
+    username: ${RABBIT_MQ_USER_NAME:ayup}
+    password: ${RABBIT_MQ_USER_PASSWORD:ayup}
+    virtual-host: /
+    ssl:
+      enabled: false      
+      
+---
+# **bootstrap-uat.yml**
+#spring:
+#  profiles: uat
+#  cloud:
+#    config:
+#      uri: ${CLOUD_CONFIG_SERVER_URI:http://159.17.0.191:10088/config}
+#      fail-fast: ${CLOUD_CONFIG_SERVER_FAIL_FAST:true}
+#  rabbitmq:
+#    host: ${RABBIT_MQ_HOST:159.17.0.191}
+#    port: 5672
+#    username: ${RABBIT_MQ_USER_NAME:ayup}
+#    password: ${RABBIT_MQ_USER_PASSWORD:ayup}
+#    virtual-host: /
+#    ssl:
+#      enabled: false  spring:
+#  profiles: uat
+#  cloud:
+#    config:
+#      uri: ${CLOUD_CONFIG_SERVER_URI:http://159.17.0.191:10088/config}
+#      fail-fast: ${CLOUD_CONFIG_SERVER_FAIL_FAST:true}
+#  rabbitmq:
+#    host: ${RABBIT_MQ_HOST:159.17.0.191}
+#    port: 5672
+#    username: ${RABBIT_MQ_USER_NAME:ayup}
+#    password: ${RABBIT_MQ_USER_PASSWORD:ayup}
+#    virtual-host: /
+#    ssl:
+#      enabled: false
+
+
+      
+---
+# **bootstrap-prod.yml**
+spring:
+  profiles: prod
+  cloud:
+    config:
+      uri: ${CLOUD_CONFIG_SERVER_URI:http://159.17.0.191:10088/config}
+      fail-fast: ${CLOUD_CONFIG_SERVER_FAIL_FAST:false}
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST:159.17.0.177}
+    port: 5672
+    username: ${RABBIT_MQ_USER_NAME:ayup}
+    password: ${RABBIT_MQ_USER_PASSWORD:ayup}
+    virtual-host: /
+    ssl:
+      enabled: false
