@@ -1,0 +1,61 @@
+Compose
+version: '3.8'
+
+services:
+  epps-ayu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: repo/ayup/epps-ayu:latest
+    ports:
+      - "10082:10082"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev 
+    volumes:
+      - /tmp
+-----------------------------------------------------------------------------------
+# Use Amazon Corretto 8 as the base image for the builder stage
+FROM amazoncorretto:8u292-alpine-jre as builder
+
+# Create a temporary volume for storing build artifacts
+VOLUME /tmp
+
+# Set the working directory for the builder
+WORKDIR /epps-ayu
+
+# Define the JAR file location
+ARG JAR_FILE=target/*.jar
+
+# Copy the JAR file into the builder image
+COPY ${JAR_FILE} epps-ayu.jar
+
+# Use Spring Boot's layer extraction feature to separate dependencies
+RUN java -Djarmode=layertools -jar epps-ayu.jar extract
+
+# Use Amazon Corretto 8 as the base image for the runtime stage
+FROM amazoncorretto:8u292-alpine-jre
+
+# Set the working directory for the runtime image
+WORKDIR /epps-ayu
+
+# Copy extracted layers from the builder stage
+COPY --from=builder /epps-ayu/dependencies/ ./
+COPY --from=builder /epps-ayu/spring-boot-loader/ ./
+COPY --from=builder /epps-ayu/snapshot-dependencies/ ./
+COPY --from=builder /epps-ayu/application/ ./
+
+# Expose the application port
+EXPOSE 10082
+
+# Define the entry point for the application
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+
+# Build your Docker image using the following command.
+# docker build -t repo/ayup/epps-ayu --force-rm=true .
+
+# After the build completes, tag your image for pushing to a repository:
+# docker tag repo/ayup/epps-ayu:latest 856505212696.dkr.ecr.ap-southeast-1.amazonaws.com/repo/ayup/epps-ayu:latest
+
+# To deploy the application image in your Docker container on port 10082:
+# docker run -it --publish 10082:10082 --name epps-ayu repo/ayup/epps-ayu
+
